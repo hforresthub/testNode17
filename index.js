@@ -11,3 +11,49 @@ const server = http.createServer((req, res) => {
 })
 server.listen(3000)
 
+const Stream = require('stream')
+
+const readableStream = new Stream.Readable()
+readableStream._read = () => {
+	
+}
+
+readableStream.on('readable', () => {
+	console.log('testing: ', readableStream.read().toString())
+})
+
+const readableStream2 = new Stream.Readable({
+	read() {}
+})
+
+const writeableStream = new Stream.Writable()
+writeableStream._write = (chunk, encoding, next) => {
+	console.log(chunk.toString())
+	next()
+}
+
+readableStream.pipe(writeableStream)
+
+readableStream.push('Hi!')
+readableStream.push('Ho!')
+
+writeableStream.write('hey hey!!!\n')
+
+// readableStream.on('close', () => writeableStream.end())
+// writeableStream.on('close', () => console.log('ended'))
+
+// readableStream.destroy()
+// readableStream2.destroy()
+
+const { Transform } = require('stream')
+const TransformStream = new Transform()
+
+TransformStream._transform = (chunk, encodi8ng, callback) => {
+	console.log(chunk.toString())
+	TransformStream.push(chunk.toString().toUpperCase())
+	callback()
+}
+
+TransformStream.write("test test")
+
+process.stdin.pipe(TransformStream).pipe(process.stdout)
