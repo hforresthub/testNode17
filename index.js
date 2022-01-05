@@ -45,6 +45,17 @@ writeableStream.write('hey hey!!!\n')
 // readableStream.destroy()
 // readableStream2.destroy()
 
+if (process.env.NODE_ENV === "development") {
+	console.log("in development mode")
+}
+if (process.env.NODE_ENV === "production") {
+	console.log("in production mode")
+}
+if (['production', 'staging'].indexOf(process.env.NODE_ENV) >= 0) {
+	console.log('in production or staging')
+}
+
+
 const { Transform } = require('stream')
 const TransformStream = new Transform()
 
